@@ -19,7 +19,6 @@ class Interface():
 
 
 	def getResolution(self, window):
-
 		window.update_idletasks()
 		screen_width = window.winfo_screenwidth()
 		screen_height = window.winfo_screenheight()
@@ -32,11 +31,9 @@ class Interface():
 		m_1_height= window.winfo_height()
 		m_1_width= window.winfo_width()
 
-
 		print(m_1_width, m_1_height)
 		print("*"*80)
 		print(screen_width, screen_height)
-
 
 		screen_resolution = str(screen_width)+'x'+str(screen_height)
 
@@ -72,15 +69,13 @@ class Interface():
 
 
 	def clicked(self, txt, lbl):
-
 		self.data = txt.get()
 		lbl.configure(text=self.data)
 
 
 	def printDataCheck(self, window):
-
 		lbl = Label(window, text="Данные для анализа: {}".format(self.data),
-														font=("Arial Bold", 10))  
+							font=("Arial Bold", 10))  
 		lbl.grid(column=0, row=0)
 
 
@@ -96,11 +91,9 @@ class Interface():
 					[sg.Input(key='-IN-'), sg.Button('Enter')],
 					[sg.Button('Start process'), sg.Button('Exit')]]
 
-
 		window = sg.Window('DFPA V-0.03', layout, size=(1024, 720))
 
 		while True:
-
 			event, values = window.read()                  
 			print('Path to data', values, event)
 
@@ -115,7 +108,6 @@ class Interface():
 			if event == 'Start process':
 				self.startProcess()
 				print("*"*80)
-
 
 		window.close()   
 		return True
