@@ -19,7 +19,7 @@ class Interface():
 
 	def startProcess(self):
 		if self.data is not None:
-			self.objUser.df = self.data
+			self.objUser.df_name = self.data
 			status = self.objUser.startProcessing()
 			print(status)
 		else:
@@ -32,6 +32,7 @@ class Interface():
 
 		if self.data:
 			text = sg.Text(self.data)
+			self.startProcess()
 		else:
 			text = sg.Text(size=(15,1), key='-OUTPUT-')
 

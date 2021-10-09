@@ -39,9 +39,9 @@ class OpenData():
 
 	id_iter = itertools.count()
 
-	def __init__(self, df):
+	def __init__(self, df_name):
 		self.id = next(self.id_iter)
-		self.df = pd.read_csv(df)
+		self.df = pd.read_csv(df_name)
 		self.roadMap = RoadMap(self.id, self.df)
 
 	def __len__(self):
@@ -55,7 +55,8 @@ class OpenData():
 class UserControl():
 
 	def __init__(self, df):
-		self.df = df
+		self.df_name = df
+		self.df = None
 		self.test = [1,2,3]
 
 	'''def createInterface(self, data):
@@ -77,8 +78,8 @@ class UserControl():
 		return data'''
 
 	def createUserInterface(self, objUser):
-		print("\nCreate createInterface\nData and problem: {}".format(self.df))
-		interface = Interface(self.df, objUser)
+		print("\nCreate createInterface\nData and problem: {}".format(self.df_name))
+		interface = Interface(self.df_name, objUser)
 		ifaceStatus = interface.printInterface()
 
 		return ifaceStatus
@@ -89,12 +90,12 @@ class UserControl():
 			DF = OpenData(self.df)
 		else:
 			status_interface = self.createInterface("None")'''
-		DF = OpenData(self.df)
+		DF = OpenData(self.df_name)
 
 		print(DF.roadMap.status_checks())
 		print(DF.id)
 		print("=====")
-		print(self.df)
+		print(self.df_name)
 
 		QC = QualityControl(DF)
 		resultSearch = QC.problemSerch()
@@ -110,6 +111,10 @@ class UserControl():
 
 	def main(self, objUser):
 		print("Start main UserControl")
+		#if self.df:
+
+
+
 		status = self.createUserInterface(objUser)
 		return True
 
