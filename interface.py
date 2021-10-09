@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import PySimpleGUI as sg
-from tkinter import * 
 from userControl import UserControl
-from sys import platform
 
 import warnings
 warnings.simplefilter('ignore')
