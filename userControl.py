@@ -6,14 +6,13 @@ import pandas as pd
 
 import itertools
 
-#from interface import Interface
+from interface import Interface
 from visualisation import Visualisation
 from qualityControl import QualityControl
 
 
 import warnings
 warnings.simplefilter('ignore')
-
 
 
 class RoadMap():
@@ -77,6 +76,13 @@ class UserControl():
 		status = interface.printInterface()
 		return data'''
 
+	def createUserInterface(self, objUser):
+		print("\nCreate createInterface\nData and problem: {}".format(self.df))
+		interface = Interface(self.df, objUser)
+		ifaceStatus = interface.printInterface()
+
+		return ifaceStatus
+
 	def startProcessing(self):
 		print("Start startProcessing")
 		'''if self.df is not None:
@@ -101,4 +107,9 @@ class UserControl():
 
 		status_visualisation = self.newVisualisation(resultSolution)
 		return [DF, QC, resultSearch, resultSolution, status_visualisation]
+
+	def main(self, objUser):
+		print("Start main UserControl")
+		status = self.createUserInterface(objUser)
+		return True
 

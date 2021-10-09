@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import PySimpleGUI as sg
-from userControl import UserControl
+#from userControl import UserControl
 
 import warnings
 warnings.simplefilter('ignore')
@@ -10,16 +10,17 @@ warnings.simplefilter('ignore')
 
 class Interface():
 
-	def __init__(self, df):
+	def __init__(self, df, objUser):
 		self.data = df
 		self.roadMap = list()
+		self.objUser = objUser
 		self.test = [1,2,3]
 
 
 	def startProcess(self):
 		if self.data is not None:
-			clear_data = UserControl(self.data)
-			status = clear_data.startProcessing()
+			self.objUser.df = self.data
+			status = self.objUser.startProcessing()
 			print(status)
 		else:
 			print("Data not find!")

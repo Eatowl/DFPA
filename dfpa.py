@@ -5,10 +5,9 @@ import sys
 import getopt
 
 #from source import Source
-from interface import Interface
-#from userControl import UserControl
+#from interface import Interface
+from userControl import UserControl
 
-global obj_main
 
 
 class Usage(Exception):
@@ -17,12 +16,12 @@ class Usage(Exception):
         self.msg = msg
         
 
-def createInterface(data):
-        print("\nCreate createInterface\nData and problem: {}".format(data))
-        interface = Interface(data)
-        status = interface.printInterface()
+def startUserControl(data):
+    print("\nCreate obj UserControl\nData and problem: {}".format(data))
+    userControlObj = UserControl(data)
+    statusUserSession = userControlObj.main(userControlObj)
 
-        return status
+    return statusUserSession
 
 
 def main(argv = None):
@@ -38,9 +37,11 @@ def main(argv = None):
             if len(args) != 0:
                 for arg in args:
                     print(arg)
-                status_interface = createInterface(arg)
+                #status_interface = createInterface(arg)
+                status_userControl = startUserControl(arg)
             else:
-                status_interface = createInterface(None)
+                #status_interface = createInterface(None)
+                status_userControl = startUserControl(None)
 
         except getopt.error as msg:
              raise Usage(msg)
