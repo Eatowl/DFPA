@@ -7,6 +7,7 @@ import seaborn as sns
 
 from matplotlib import pyplot as plt
 
+import logging
 import warnings
 warnings.simplefilter('ignore')
 
@@ -19,7 +20,7 @@ class ProblemSolution():
 		self.test = [1,2,3]
 
 	def startSolution(self):
-		print("\nStart startSolution")
-		print("Data = {}".format(self.df))
-		print("RoadMap = {}".format(self.roadMap))
+		logging.info("Start ProblemSolution 'startSolution' function")
+		logging.debug("'startSolution' Data = {}".format(self.df))
+		logging.debug("'startSolution' RoadMap = {}".format(self.roadMap))
 		return [4, 5, 6]

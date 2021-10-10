@@ -9,6 +9,7 @@ import seaborn as sns
 
 from matplotlib import pyplot as plt
 
+import logging
 import warnings
 warnings.simplefilter('ignore')
 
@@ -21,6 +22,6 @@ class ProblemSearch():
 		self.test = [1,2,3]
 
 	def startSearch(self):
-		print("\nStart startSearch")
+		logging.info("Start ProblemSearch 'startSearch' function")
 		self.roadMap = ['Q', 'W', 'E']
 		return [1,2,3], self.roadMap

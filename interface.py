@@ -1,12 +1,10 @@
 #!/home/denis/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 
-
 from visualisation import Visualisation
 import PySimpleGUI as sg
 
-#from userControl import UserControl
-
+import logging
 import warnings
 warnings.simplefilter('ignore')
 
@@ -21,54 +19,60 @@ class Interface():
 		self.test = [1,2,3]
 
 	def getDataForVisual(self):
+		logging.info("Start Interface 'getDataForVisual' function")
 		if self.data is not None:
 			self.objUser.df_name = self.data
 			dataUserControl = self.objUser.startOfDataProcessing()
-			print(dataUserControl)
+			logging.debug("dataUserControl: {}".format(dataUserControl))
 		else:
-			print("Data not find!")
+			logging.warnings("'getDataForVisual' Data not find!")
 			dataUserControl = None
-		print("END")
 
 		return dataUserControl[4]
 
 
 	def printInterface(self):
-		print("\nStart printInterface\nData: {}".format(self.data))
+		logging.info("Start Interface 'printInterface' function")
 
 		if self.data:
+			logging.debug("Check data in Interface." \
+							" Data file name: {}".format(self.data))
 			text = sg.Text(self.data)
 			data = self.getDataForVisual()
 		else:
+			logging.debug("Check data in Interface. Data file name: Empty")
 			text = sg.Text(size=(15,1), key='-OUTPUT-')
 
 		layout = [[sg.Text('Data for analysis:'), text],
-					[sg.Input(key='-IN-'), sg.Button('Enter')],
-					[sg.Button('Start process'), sg.Button('Exit')],
-					[sg.Canvas(key='-CANVAS-')]]
+				  [sg.Input(key='-IN-'), sg.Button('Enter')],
+				  [sg.Button('Start process'), sg.Button('Exit')],
+				  [sg.Canvas(key='-CANVAS-')]]
 
-		window = sg.Window('DFPA V-0.03', layout, finalize=True, 
+		window = sg.Window('DFPA V-0.04', layout, finalize=True, 
 							size=(1024, 720))
 
 		while True:
-			event, values = window.read()                  
-			print('Path to data', values, event)
+			event, values = window.read()
+			logging.debug("Output window.read:" \
+							" event = {} values = {}".format(event, values))               
 
 			if event == sg.WIN_CLOSED or event == 'Exit':
+				logging.debug("Quit dfpa")
 				break
 
 			if event == 'Enter':
+				logging.debug("Input data in interface: {}" \
+													.format(values['-IN-']))
 				window['-OUTPUT-'].update(values['-IN-'])
 				self.data = values['-IN-']
-				print(type(values['-IN-']))
 
 			if event == 'Start process':
+				logging.debug("Start process, run getDataForVisual")
 				data_figure = self.getDataForVisual()
 				if data_figure:
-					print("Hell yeah!")
-					self.objVisual.draw_figure(canvas=window['-CANVAS-'].TKCanvas,
+					logging.debug("Print graph in window")
+					self.objVisual.drawFigure(canvas=window['-CANVAS-'].TKCanvas,
 											   figure=data_figure)
-				print("*"*80)
 
 		window.close()   
 		return True

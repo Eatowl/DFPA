@@ -4,6 +4,7 @@
 import numpy as np 
 import pandas as pd
 
+import logging
 import itertools
 
 from interface import Interface
@@ -26,9 +27,10 @@ class RoadMap():
 		self.emission_check_data = []
 
 	def status_checks(self):
-		print("ROADMAP: Status DF:\
-			   check_of_passes - {},\
-			   emission_check - {}".format(self.check_of_passes,
+		logging.info("Start RoadMap 'status_checks' function")
+		logging.debug("ROADMAP: Status DF:" \
+			   "check_of_passes - {}," \
+			   "emission_check - {}".format(self.check_of_passes,
 			   							   self.emission_check ))
 		return {"check_of_passes": self.check_of_passes,
 				"emission_check": self.emission_check}
@@ -66,38 +68,41 @@ class UserControl():
 		return status'''
 
 	def openData(self):
-		print("\nOpen and save data \n")
+		logging.info("Start UserControl 'openData' function")
 		DF = OpenData(self.df_name)
-		print(DF.roadMap.status_checks())
-		print(DF.id)
-		print("=====")
-		print(self.df_name)
+		logging.debug(DF.roadMap.status_checks())
+		logging.debug("openData: df_id {}".format(DF.id))
 
 		return DF
 
 	def createUserInterface(self, objUser):
-		print("\nCreate createInterface\nData and problem: {}".format(self.df_name))
+		logging.info("Start UserControl 'createUserInterface' function")
+		logging.debug("Create obj createInterface." \
+						" Data file name: {}".format(self.df_name))
 		self.iface = Interface(self.df_name, objUser)
 		ifaceStatus = self.iface.printInterface()
 
 		return ifaceStatus
 
 	def startOfDataProcessing(self):
-		print("Start startProcessing")
+		logging.info("Start UserControl 'startOfDataProcessing' function")
 		
 		DF = self.openData()
 		QC = QualityControl(DF)
 		resultSearch = QC.problemSerch()
-		print("Output data: {}".format(resultSearch))
+		logging.debug("UserControl startOfDataProcessing" \
+						"result problem search: {}".format(resultSearch))
+
 		resultSolution = QC.problemSolution(resultSearch)
-		print("\nSolution data: {}".format(resultSolution))
-		figure = self.iface.objVisual.create_figure("DATA")
+		logging.debug("UserControl startOfDataProcessing" \
+						"result problem solution: {}".format(resultSolution))
+		
+		figure = self.iface.objVisual.createFigure("DATA")
 
 		return [DF, QC, resultSearch, resultSolution, figure]
 
 	def main(self, objUser):
-		print("Start main UserControl")
+		logging.info("Start UserControl 'main' function")
 		status = self.createUserInterface(objUser)
-
 		return True
 
