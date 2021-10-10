@@ -3,26 +3,21 @@
 
 import sys
 import getopt
-
-#from source import Source
-#from interface import Interface
 from userControl import UserControl
-
 
 
 class Usage(Exception):
 
     def __init__(self, msg):
         self.msg = msg
+    
         
-
 def startUserControl(data):
     print("\nCreate obj UserControl\nData and problem: {}".format(data))
     userControlObj = UserControl(data)
     statusUserSession = userControlObj.main(userControlObj)
 
     return statusUserSession
-
 
 def main(argv = None):
 
@@ -35,12 +30,8 @@ def main(argv = None):
             print(args)
 
             if len(args) != 0:
-                for arg in args:
-                    print(arg)
-                #status_interface = createInterface(arg)
-                status_userControl = startUserControl(arg)
+                status_userControl = startUserControl(args[0])
             else:
-                #status_interface = createInterface(None)
                 status_userControl = startUserControl(None)
 
         except getopt.error as msg:
