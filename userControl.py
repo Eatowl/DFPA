@@ -34,7 +34,6 @@ class RoadMap():
 				"emission_check": self.emission_check}
 
 
-
 class OpenData():
 
 	id_iter = itertools.count()
@@ -51,70 +50,54 @@ class OpenData():
 		return self.id
 
 
-
 class UserControl():
 
 	def __init__(self, df):
 		self.df_name = df
 		self.df = None
+		self.iface = None
 		self.test = [1,2,3]
 
-	'''def createInterface(self, data):
-		print("\nCreate createInterface\nData and problem: {}".format(data))
-		interface = Interface(data)
-		status = interface.printInterface()
-		return status'''
-
-	def newVisualisation(self, data):
+	'''def newVisualisation(self, data):
 		print("\nCreate newVisualisation\nData: {}".format(data))
 		visual = Visualisation(data)
 		status = visual.startVisualisation()
-		return status
 
-	'''def openData(self, data):
+		return status'''
+
+	def openData(self):
 		print("\nOpen and save data \n")
-		interface = Interface(data)
-		status = interface.printInterface()
-		return data'''
-
-	def createUserInterface(self, objUser):
-		print("\nCreate createInterface\nData and problem: {}".format(self.df_name))
-		interface = Interface(self.df_name, objUser)
-		ifaceStatus = interface.printInterface()
-
-		return ifaceStatus
-
-	def startProcessing(self):
-		print("Start startProcessing")
-		'''if self.df is not None:
-			DF = OpenData(self.df)
-		else:
-			status_interface = self.createInterface("None")'''
 		DF = OpenData(self.df_name)
-
 		print(DF.roadMap.status_checks())
 		print(DF.id)
 		print("=====")
 		print(self.df_name)
 
+		return DF
+
+	def createUserInterface(self, objUser):
+		print("\nCreate createInterface\nData and problem: {}".format(self.df_name))
+		self.iface = Interface(self.df_name, objUser)
+		ifaceStatus = self.iface.printInterface()
+
+		return ifaceStatus
+
+	def startOfDataProcessing(self):
+		print("Start startProcessing")
+		
+		DF = self.openData()
 		QC = QualityControl(DF)
 		resultSearch = QC.problemSerch()
 		print("Output data: {}".format(resultSearch))
-
-		#status_interface = self.createInterface(resultSearch)
-
 		resultSolution = QC.problemSolution(resultSearch)
 		print("\nSolution data: {}".format(resultSolution))
+		figure = self.iface.objVisual.create_figure("DATA")
 
-		status_visualisation = self.newVisualisation(resultSolution)
-		return [DF, QC, resultSearch, resultSolution, status_visualisation]
+		return [DF, QC, resultSearch, resultSolution, figure]
 
 	def main(self, objUser):
 		print("Start main UserControl")
-		#if self.df:
-
-
-
 		status = self.createUserInterface(objUser)
+
 		return True
 

@@ -1,7 +1,10 @@
 #!/home/denis/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 
+
+from visualisation import Visualisation
 import PySimpleGUI as sg
+
 #from userControl import UserControl
 
 import warnings
@@ -14,17 +17,20 @@ class Interface():
 		self.data = df
 		self.roadMap = list()
 		self.objUser = objUser
+		self.objVisual = Visualisation(df)
 		self.test = [1,2,3]
 
-
-	def startProcess(self):
+	def getDataForVisual(self):
 		if self.data is not None:
 			self.objUser.df_name = self.data
-			status = self.objUser.startProcessing()
-			print(status)
+			dataUserControl = self.objUser.startOfDataProcessing()
+			print(dataUserControl)
 		else:
 			print("Data not find!")
+			dataUserControl = None
 		print("END")
+
+		return dataUserControl[4]
 
 
 	def printInterface(self):
@@ -32,15 +38,17 @@ class Interface():
 
 		if self.data:
 			text = sg.Text(self.data)
-			self.startProcess()
+			data = self.getDataForVisual()
 		else:
 			text = sg.Text(size=(15,1), key='-OUTPUT-')
 
 		layout = [[sg.Text('Data for analysis:'), text],
 					[sg.Input(key='-IN-'), sg.Button('Enter')],
-					[sg.Button('Start process'), sg.Button('Exit')]]
+					[sg.Button('Start process'), sg.Button('Exit')],
+					[sg.Canvas(key='-CANVAS-')]]
 
-		window = sg.Window('DFPA V-0.03', layout, size=(1024, 720))
+		window = sg.Window('DFPA V-0.03', layout, finalize=True, 
+							size=(1024, 720))
 
 		while True:
 			event, values = window.read()                  
@@ -55,7 +63,12 @@ class Interface():
 				print(type(values['-IN-']))
 
 			if event == 'Start process':
-				self.startProcess()
+				data_figure = self.getDataForVisual()
+				if data_figure:
+					print("Hell yeah!")
+					self.objVisual.draw_figure(
+										canvas=window['-CANVAS-'].TKCanvas,
+										figure=data_figure)
 				print("*"*80)
 
 		window.close()   
