@@ -66,9 +66,8 @@ class Interface():
 				data_figure = self.getDataForVisual()
 				if data_figure:
 					print("Hell yeah!")
-					self.objVisual.draw_figure(
-										canvas=window['-CANVAS-'].TKCanvas,
-										figure=data_figure)
+					self.objVisual.draw_figure(canvas=window['-CANVAS-'].TKCanvas,
+											   figure=data_figure)
 				print("*"*80)
 
 		window.close()   
