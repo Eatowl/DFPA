@@ -97,7 +97,7 @@ class UserControl():
 		logging.debug("UserControl startOfDataProcessing" \
 						"result problem solution: {}".format(resultSolution))
 		
-		figure = self.iface.objVisual.createFigure("DATA")
+		figure = self.iface.objVisual.createFigure(DF)
 
 		return [DF, QC, resultSearch, resultSolution, figure]
 

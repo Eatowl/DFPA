@@ -29,9 +29,13 @@ class Visualisation():
 
 	def createFigure(self, data):
 		logging.info("Start Visualisation 'createFigure' function")
+		logging.debug("//////////////////////////////////////////")
+		logging.debug("'createFigure' Data: {}".format(data.df.dtypes[1]))
+		logging.debug("//////////////////////////////////////////")
+		df_str = data.df.select_dtypes(include=['float64', 'int64'])
+		df_str.columns
 		figure = matplotlib.figure.Figure(figsize=(5, 4), dpi=100)
-		t = np.arange(0, 3, .01)
-		figure.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+		figure.add_subplot(111).hist(df_str['Annual Income'], bins = 20)
 		return figure
 
 	def startVisualisation(self):
