@@ -16,7 +16,6 @@ class Interface():
 		self.roadMap = list()
 		self.objUser = objUser
 		self.objVisual = Visualisation(df)
-		self.test = [1,2,3]
 
 	def getDataForVisual(self):
 		logging.info("Start Interface 'getDataForVisual' function")

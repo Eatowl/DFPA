@@ -18,7 +18,6 @@ class Visualisation():
 	def __init__(self, df):
 		self.data = df
 		self.roadMap = list()
-		self.test = [1,2,3]
 
 	def drawFigure(self, canvas, figure):
 		logging.info("Start Visualisation 'drawFigure' function")

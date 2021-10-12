@@ -1,6 +1,8 @@
 #!/home/denis/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 import numpy as np 
 import pandas as pd
 
@@ -40,7 +42,7 @@ class OpenData():
 
 	id_iter = itertools.count()
 
-	def __init__(self, df_name):
+	def __init__(self, df_name : str):
 		self.id = next(self.id_iter)
 		self.df = pd.read_csv(df_name)
 		self.roadMap = RoadMap(self.id, self.df)
@@ -58,7 +60,6 @@ class UserControl():
 		self.df_name = df
 		self.df = None
 		self.iface = None
-		self.test = [1,2,3]
 
 	'''def newVisualisation(self, data):
 		print("\nCreate newVisualisation\nData: {}".format(data))
@@ -75,7 +76,7 @@ class UserControl():
 
 		return DF
 
-	def createUserInterface(self, objUser):
+	def createUserInterface(self, objUser : UserControl):
 		logging.info("Start UserControl 'createUserInterface' function")
 		logging.debug("Create obj createInterface." \
 						" Data file name: {}".format(self.df_name))

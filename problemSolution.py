@@ -17,7 +17,6 @@ class ProblemSolution():
 	def __init__(self, df, roadMap):
 		self.df = df
 		self.roadMap = roadMap
-		self.test = [1,2,3]
 
 	def startSolution(self):
 		logging.info("Start ProblemSolution 'startSolution' function")
