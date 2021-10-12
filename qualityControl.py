@@ -1,28 +1,29 @@
 #!/home/denis/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 import logging
 import warnings
 warnings.simplefilter('ignore')
 
-from source import Source
+
+from problemSearch import ProblemSearch
 from problemSolution import ProblemSolution
 
 
 class QualityControl():
 
-	def __init__(self, df):
-		self.df = df
-		self.roadMap = list()
-		self.test = [1,2,3]
+	def __init__(self, objData : OpenData):
+		self.df = objData.df
+		self.roadMap = objData.roadMap
 
 	def problemSerch(self):
 		logging.info("Start QualityControl 'problemSerch' function")
-		obj_source = Source(self.df)
-		result = obj_source.problemSearch()
+		problemData = ProblemSearch(self.df, self.roadMap)
+		result = problemData.startSearch()
 		logging.debug("'problemSerch' obj_source {}"\
-										.format(obj_source.df.head()))
-		self.roadMap = obj_source.roadMap
+										.format(problemData.df.head()))
 		return result
 
 	def problemSolution(self, data):

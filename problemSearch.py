@@ -5,8 +5,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-#from source import Source
-
 from matplotlib import pyplot as plt
 
 import logging
@@ -19,14 +17,9 @@ class ProblemSearch():
 	def __init__(self, df, roadMap):
 		self.df = df
 		self.roadMap = roadMap
-		self.test = [1,2,3]
 
 	def searchForPasses(self):
 		logging.info("Start ProblemSearch 'searchForPasses' function")
-		logging.debug("*"*80)
-		logging.debug(self.df.isna().sum())
-		logging.debug(self.df.columns.values)
-		logging.debug("*"*80)
 		self.roadMap.check_of_passes = True
 		for valueAndName in zip(self.df.isna().sum(), self.df.columns.values):
 			if valueAndName[0] > 0:
