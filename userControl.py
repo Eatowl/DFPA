@@ -61,13 +61,6 @@ class UserControl():
 		self.df = None
 		self.iface = None
 
-	'''def newVisualisation(self, data):
-		print("\nCreate newVisualisation\nData: {}".format(data))
-		visual = Visualisation(data)
-		status = visual.startVisualisation()
-
-		return status'''
-
 	def openData(self):
 		logging.info("Start UserControl 'openData' function")
 		DF = OpenData(self.df_name)
