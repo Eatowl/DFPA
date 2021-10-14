@@ -64,6 +64,7 @@ class UserControl():
 	def openData(self):
 		logging.info("Start UserControl 'openData' function")
 		DF = OpenData(self.df_name)
+		self.df = DF
 		logging.debug(DF.roadMap.status_checks())
 		logging.debug("openData: df_id {}".format(DF.id))
 
@@ -78,6 +79,22 @@ class UserControl():
 
 		return ifaceStatus
 
+	def startProblemSearch(self):
+		logging.info("Start UserControl 'startProblemSearch' function")
+		
+		DF = self.openData()
+		QC = QualityControl(DF)
+		resultSearch = QC.problemSerch()
+		logging.debug("UserControl startOfDataProcessing" \
+						"result problem search: {}".format(resultSearch))
+
+	def startProblemSolution(self):
+		logging.info("Start UserControl 'startProblemSolution' function")
+		
+		resultSolution = QC.problemSolution(resultSearch)
+		logging.debug("UserControl startOfDataProcessing" \
+						"result problem solution: {}".format(resultSolution))
+
 	def startOfDataProcessing(self):
 		logging.info("Start UserControl 'startOfDataProcessing' function")
 		
@@ -91,7 +108,7 @@ class UserControl():
 		logging.debug("UserControl startOfDataProcessing" \
 						"result problem solution: {}".format(resultSolution))
 		
-		figure = self.iface.objVisual.createFigure(DF)
+		figure = self.iface.objVisual.createFigure(self.df)
 
 		return [DF, QC, resultSearch, resultSolution, figure]
 
