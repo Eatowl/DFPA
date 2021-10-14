@@ -1,6 +1,7 @@
 #!/home/denis/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 
+from screeninfo import get_monitors
 from visualisation import Visualisation
 import PySimpleGUI as sg
 
@@ -15,6 +16,15 @@ class Interface():
 		self.data_name = df
 		self.objUser = objUser
 		self.objVisual = Visualisation(df)
+
+	def getWindowSize(self):
+		logging.info("Start Interface 'getWindowSize' function")
+		screen = get_monitors()
+		screen2 = get_monitors()[1]
+		logging.debug("len(screen) {}".format(len(screen)))
+		logging.debug("screen2 {}".format(screen2))
+		#width, hight = screen[0][0]
+		return screen[0].width, screen[0].height
 
 	def updateTextField(self, window, data):
 		logging.info("Start Interface 'updateTextField' function")
@@ -43,47 +53,60 @@ class Interface():
 			#data = self.getDataForVisual()
 		else:
 			logging.debug("Check data in Interface. Data file name: Empty")
-			text = sg.Text(size=(15,1), key='-OUTPUT-')
+			text = sg.Text(size=(45,1), key='-OUTPUT-')
 
 		layout = [[sg.Text('Data for analysis:'), text],
-				  [sg.Input(key='-IN-'), sg.Button('Enter')],
-				  [sg.Button('Data integrity check'), sg.Button('Error correction'), sg.Button('Visualisation'), sg.Button('Exit')],
-				  [sg.Canvas(key='-CANVAS-'), sg.Text('verification data:', size=(900, 10), key='-text-')]]
+				  [sg.Text('Data for analysis: ', size=(15, 1)), sg.InputText(),\
+				   sg.FileBrowse(file_types=(("csv files", "*.csv"),)),\
+				   sg.Button('Open')],
+				  [sg.Button('Data integrity check'),\
+				   sg.Button('Error correction'),\
+				   sg.Button('Visualisation'),\
+				   sg.Button('Exit')],
+				  [sg.Canvas(key='-CANVAS-'),\
+				   sg.Text('verification data:', size=(900, 10), key='-text-')]]
 
+		width, height = self.getWindowSize()
+		height = height - 40
 		window = sg.Window('DFPA V-0.0.4', layout, finalize=True, 
-							size=(1440, 900))
+							size=(width-150, height-150))
 
 		while True:
 			event, values = window.read()
 			logging.debug("Output window.read:" \
-							" event = {} values = {}".format(event, values))               
+							" event = {} values = {}".format(event, values))
 
 			if event == sg.WIN_CLOSED or event == 'Exit':
 				logging.debug("Quit dfpa")
 				break
 
-			if event == 'Enter':
+			if event == 'Open':
 				logging.debug("Input data in interface: {}" \
-													.format(values['-IN-']))
-				window['-OUTPUT-'].update(values['-IN-'])
-				self.data_name = values['-IN-']
+													.format(values['Browse']))
+				window['-OUTPUT-'].update(values['Browse'])
+				self.data_name = values['Browse']
 
 			if event == 'Data integrity check':
 				logging.debug("Start process, run getDataForVisual")
-				logging.debug("Print data in objUser {}".format(self.objUser.df.roadMap.check_of_passes_data))	
-				self.updateTextField(window, self.objUser.df.roadMap.check_of_passes_data)
+				logging.debug("Print data in objUser {}"\
+					   .format(self.objUser.df.roadMap.check_of_passes_data))	
+				self.updateTextField(window,\
+								 self.objUser.df.roadMap.check_of_passes_data)
 
 			if event == 'Error correction':
 				logging.debug("Start process, run getDataForVisual")
-				logging.debug("Print data in objUser {}".format(self.objUser.df.roadMap.emission_check))	
-				self.updateTextField(window, self.objUser.df.roadMap.emission_check)
+				logging.debug("Print data in objUser {}"\
+							.format(self.objUser.df.roadMap.emission_check))	
+				self.updateTextField(window,\
+								 self.objUser.df.roadMap.emission_check)
 
 			if event == 'Visualisation':
 				logging.debug("Start process, run getDataForVisual")
 				data_figure = self.getDataForVisual()
 				if data_figure:
 					logging.debug("Print graph in window")
-					logging.debug("Print data in objUser {}".format(self.objUser.df.roadMap.check_of_passes_data))
+					logging.debug("Print data in objUser {}"\
+						.format(self.objUser.df.roadMap.check_of_passes_data))
 					self.objVisual.drawFigure(canvas=window['-CANVAS-'].TKCanvas,
 											   figure=data_figure)
 
