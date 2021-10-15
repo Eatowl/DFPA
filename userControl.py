@@ -27,15 +27,20 @@ class RoadMap():
 		self.check_of_passes_data = []
 		self.emission_check = False
 		self.emission_check_data = []
+		self.check_memory_usage = False
+		self.memory_usage_result = []
 
 	def status_checks(self):
 		logging.info("Start RoadMap 'status_checks' function")
 		logging.debug("ROADMAP: Status DF:" \
 			   "check_of_passes - {}," \
-			   "emission_check - {}".format(self.check_of_passes,
-			   							   self.emission_check ))
+			   "emission_check - {}," \
+			   "check_memory_usage - {}".format(self.check_of_passes,
+												self.emission_check,
+												self.check_memory_usage))
 		return {"check_of_passes": self.check_of_passes,
-				"emission_check": self.emission_check}
+				"emission_check": self.emission_check,
+				"check_memory_usage": self.check_memory_usage}
 
 
 class OpenData():
@@ -65,6 +70,7 @@ class UserControl():
 		logging.info("Start UserControl 'openData' function")
 		DF = OpenData(self.df_name)
 		self.df = DF
+		logging.debug(self.df.df.columns)
 		logging.debug(DF.roadMap.status_checks())
 		logging.debug("openData: df_id {}".format(DF.id))
 

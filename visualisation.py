@@ -31,7 +31,8 @@ class Visualisation():
 		logging.debug("//////////////////////////////////////////")
 		logging.debug("'createFigure' Data: {}".format(data.df.dtypes[1]))
 		logging.debug("//////////////////////////////////////////")
-		df_str = data.df.select_dtypes(include=['float64', 'int64'])
+		df_str = data.df.select_dtypes(include=['float64', 'float32', \
+												'int64', 'int32', 'int16', 'int8'])
 		df_str.columns
 		figure = matplotlib.figure.Figure(figsize=(5, 4), dpi=100)
 		figure.add_subplot(111).hist(df_str['Annual Income'], bins = 20)

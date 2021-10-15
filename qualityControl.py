@@ -29,6 +29,6 @@ class QualityControl():
 	def problemSolution(self, data):
 		logging.info("Start QualityControl 'problemSolution' function")
 		logging.debug("'problemSolution' data = {}".format(data))
-		obj_Solution = ProblemSolution(data, self.roadMap)
+		obj_Solution = ProblemSolution(self.df, self.roadMap)
 		result = obj_Solution.startSolution()
 		return result

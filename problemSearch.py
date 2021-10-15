@@ -18,6 +18,14 @@ class ProblemSearch():
 		self.df = df
 		self.roadMap = roadMap
 
+	def checkMemUsage(self):
+		logging.info("Start ProblemSearch 'checkMemUsage' function")
+		self.roadMap.check_memory_usage = True
+		start_mem = self.df.memory_usage().sum() / 1024**2
+		logging.debug('Memory usage of dataframe is {:.2f} MB'\
+														.format(start_mem))
+		self.roadMap.memory_usage_result.append(start_mem)
+
 	def searchForPasses(self):
 		logging.info("Start ProblemSearch 'searchForPasses' function")
 		self.roadMap.check_of_passes = True
@@ -27,6 +35,12 @@ class ProblemSearch():
 
 	def startSearch(self):
 		logging.info("Start ProblemSearch 'startSearch' function")
+		logging.debug("ProblemSearch 'checkMemUsage' function."\
+						" Value check_memory_usage: {}"\
+								.format(self.roadMap.check_memory_usage))
+		if self.roadMap.check_memory_usage is False:
+			self.checkMemUsage()
+
 		logging.debug("ProblemSearch 'startSearch' function."\
 						" Value check_of_passes: {}"\
 								.format(self.roadMap.check_of_passes))
