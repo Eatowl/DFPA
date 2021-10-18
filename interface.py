@@ -56,7 +56,8 @@ class Interface():
             text = sg.Text(size=(45,1), key='-OUTPUT-')
 
         layout = [[sg.Text('Data for analysis:'), text],
-                  [sg.Text('Data for analysis: ', size=(15, 1)), sg.InputText(),\
+                  [sg.Text('Data for analysis: ', size=(15, 1)),
+                   sg.InputText(),\
                    sg.FileBrowse(file_types=(("csv files", "*.csv"),)),\
                    sg.Button('Open')],
                   [sg.Button('Data integrity check'),\
