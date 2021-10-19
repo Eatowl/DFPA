@@ -64,40 +64,38 @@ class UserControl():
     def __init__(self, df):
         self.df_name = df
         self.df = None
-        self.iface = None
+        self.objIface = None
+        self.objQuality = None
 
     def openData(self):
         logging.info("Start UserControl 'openData' function")
-        DF = OpenData(self.df_name)
-        self.df = DF
+        self.df = OpenData(self.df_name)
         logging.debug(self.df.df.columns)
-        logging.debug(DF.roadMap.status_checks())
-        logging.debug("openData: df_id {}".format(DF.id))
+        logging.debug(self.df.roadMap.status_checks())
+        logging.debug("openData: df_id {}".format(self.df.id))
 
-        return DF
+        return self.df
 
     def createUserInterface(self, objUser : UserControl):
         logging.info("Start UserControl 'createUserInterface' function")
         logging.debug("Create obj createInterface." \
                         " Data file name: {}".format(self.df_name))
-        self.iface = Interface(self.df_name, objUser)
-        ifaceStatus = self.iface.printInterface()
+        self.objIface = Interface(self.df_name, objUser)
+        ifaceStatus = self.objIface.printInterface()
 
         return ifaceStatus
 
     def startProblemSearch(self):
         logging.info("Start UserControl 'startProblemSearch' function")
-        
-        DF = self.openData()
-        QC = QualityControl(DF)
-        resultSearch = QC.problemSerch()
+        self.objQuality = QualityControl(self.df)
+        resultSearch = self.objQuality.problemSerch()
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem search: {}".format(resultSearch))
 
     def startProblemSolution(self):
         logging.info("Start UserControl 'startProblemSolution' function")
         
-        resultSolution = QC.problemSolution(resultSearch)
+        resultSolution = self.objQuality.problemSolution(resultSearch)
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
 
@@ -114,7 +112,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
         
-        figure = self.iface.objVisual.createFigure(self.df)
+        figure = self.objIface.objVisual.createFigure(self.df)
 
         return [DF, QC, resultSearch, resultSolution, figure]
 

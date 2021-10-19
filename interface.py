@@ -50,6 +50,8 @@ class Interface():
             logging.debug("Check data in Interface." \
                             " Data file name: {}".format(self.data_name))
             text = sg.Text(self.data_name)
+            self.objUser.df_name = self.data_name
+            self.objUser.openData()
             #data = self.getDataForVisual()
         else:
             logging.debug("Check data in Interface. Data file name: Empty")
@@ -63,6 +65,7 @@ class Interface():
                   [sg.Button('Data integrity check'),\
                    sg.Button('Error correction'),\
                    sg.Button('Visualisation'),\
+                   sg.Button('Auto'),\
                    sg.Button('Exit')],
                   [sg.Canvas(key='-CANVAS-'),\
                    sg.Text('verification data:', size=(900, 10), key='-text-')]]
@@ -86,9 +89,13 @@ class Interface():
                                                     .format(values['Browse']))
                 window['-OUTPUT-'].update(values['Browse'])
                 self.data_name = values['Browse']
+                self.objUser.df_name = self.data_name
+                self.objUser.openData()
 
             if event == 'Data integrity check':
                 logging.debug("Start process, run getDataForVisual")
+
+                self.objUser.startProblemSearch()
                 logging.debug("Print data in objUser {}"\
                        .format(self.objUser.df.roadMap.check_of_passes_data))
                 self.updateTextField(window,\
@@ -103,13 +110,25 @@ class Interface():
 
             if event == 'Visualisation':
                 logging.debug("Start process, run getDataForVisual")
+                data_figure = self.objVisual.createFigure(self.objUser.df)
+                if data_figure:
+                    logging.debug("Print graph in window")
+                    logging.debug("Print data in objUser {}"\
+                        .format(self.objUser.df.roadMap.check_of_passes_data))
+                    self.objVisual.drawFigure(\
+                                            canvas=window['-CANVAS-'].TKCanvas,
+                                            figure=data_figure)
+
+            if event == 'Auto':
+                logging.debug("Start process, run getDataForVisual")
                 data_figure = self.getDataForVisual()
                 if data_figure:
                     logging.debug("Print graph in window")
                     logging.debug("Print data in objUser {}"\
                         .format(self.objUser.df.roadMap.check_of_passes_data))
-                    self.objVisual.drawFigure(canvas=window['-CANVAS-'].TKCanvas,
-                                               figure=data_figure)
+                    self.objVisual.drawFigure(\
+                                            canvas=window['-CANVAS-'].TKCanvas,
+                                            figure=data_figure)
 
         window.close()
         return True
