@@ -1,6 +1,3 @@
-#!/home/denis/anaconda3/bin/python3
-# -*- coding: utf-8 -*-
-
 from screeninfo import get_monitors
 from visualisation import Visualisation
 import PySimpleGUI as sg

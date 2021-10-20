@@ -1,9 +1,5 @@
-#!/home/denis/anaconda3/bin/python3
-# -*- coding: utf-8 -*-
-
 import numpy as np 
 import pandas as pd
-import seaborn as sns
 
 from matplotlib import pyplot as plt
 

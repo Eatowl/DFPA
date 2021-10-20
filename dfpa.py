@@ -1,4 +1,4 @@
-#!/home/denis/anaconda3/bin/python3
+#!/home/denis/anaconda3/envs/env/bin/python
 # -*- coding: utf-8 -*-
 
 import sys

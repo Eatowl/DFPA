@@ -1,6 +1,3 @@
-#!/home/denis/anaconda3/bin/python3
-# -*- coding: utf-8 -*-
-
 from matplotlib.ticker import NullFormatter
 import matplotlib.pyplot as plt
 import numpy as np
