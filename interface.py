@@ -69,7 +69,7 @@ class Interface():
 
         width, height = self.getWindowSize()
         height = height - 40
-        window = sg.Window('DFPA V-0.0.4', layout, finalize=True,
+        window = sg.Window('DFPA V-0.0.5', layout, finalize=True,
                                            size=(width-150, height-150))
 
         while True:
@@ -77,55 +77,46 @@ class Interface():
             logging.debug("Output window.read:" \
                             " event = {} values = {}".format(event, values))
 
-            if event == sg.WIN_CLOSED or event == 'Exit':
-                logging.debug("Quit dfpa")
-                break
+            match event:
+                case sg.WIN_CLOSED | 'Exit':
+                    logging.debug("Quit dfpa")
+                    break
 
-            if event == 'Open':
-                logging.debug("Input data in interface: {}" \
+                case 'Open':
+                    logging.debug("Open data in interface: {}" \
                                                     .format(values['Browse']))
-                window['-OUTPUT-'].update(values['Browse'])
-                self.data_name = values['Browse']
-                self.objUser.df_name = self.data_name
-                self.objUser.openData()
+                    window['-OUTPUT-'].update(values['Browse'])
+                    self.data_name = values['Browse']
+                    self.objUser.df_name = self.data_name
+                    self.objUser.openData()
 
-            if event == 'Data integrity check':
-                logging.debug("Start process, run getDataForVisual")
-
-                self.objUser.startProblemSearch()
-                logging.debug("Print data in objUser {}"\
-                       .format(self.objUser.df.roadMap.check_of_passes_data))
-                self.updateTextField(window,\
+                case 'Data integrity check':
+                    logging.debug("Start 'Data integrity check'.")
+                    self.objUser.startProblemSearch()
+                    self.updateTextField(window,\
                                  self.objUser.df.roadMap.check_of_passes_data)
 
-            if event == 'Error correction':
-                logging.debug("Start process, run getDataForVisual")
-                logging.debug("Print data in objUser {}"\
-                            .format(self.objUser.df.roadMap.emission_check))
-                self.updateTextField(window,\
+                case 'Error correction':
+                    logging.debug("Start 'Error correction'.")
+                    self.updateTextField(window,\
                                  self.objUser.df.roadMap.emission_check)
 
-            if event == 'Visualisation':
-                logging.debug("Start process, run getDataForVisual")
-                data_figure = self.objVisual.createFigure(self.objUser.df)
-                if data_figure:
-                    logging.debug("Print graph in window")
-                    logging.debug("Print data in objUser {}"\
-                        .format(self.objUser.df.roadMap.check_of_passes_data))
-                    self.objVisual.drawFigure(\
+                case 'Visualisation':
+                    logging.debug("Start 'Visualisation'.")
+                    data_figure = self.objVisual.createFigure(self.objUser.df)
+                    if data_figure:
+                        logging.debug("Print graph in window ['Visualisation']")
+                        self.objVisual.drawFigure(\
                                             canvas=window['-CANVAS-'].TKCanvas,
                                             figure=data_figure)
 
-            if event == 'Auto':
-                logging.debug("Start process, run getDataForVisual")
-                data_figure = self.getDataForVisual()
-                if data_figure:
-                    logging.debug("Print graph in window")
-                    logging.debug("Print data in objUser {}"\
-                        .format(self.objUser.df.roadMap.check_of_passes_data))
-                    self.objVisual.drawFigure(\
+                case 'Auto':
+                    logging.debug("Start 'Auto', run getDataForVisual")
+                    data_figure = self.getDataForVisual()
+                    if data_figure:
+                        logging.debug("Print graph in window ['Auto']")
+                        self.objVisual.drawFigure(\
                                             canvas=window['-CANVAS-'].TKCanvas,
                                             figure=data_figure)
-
         window.close()
         return True
