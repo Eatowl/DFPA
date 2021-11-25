@@ -111,7 +111,7 @@ class UserControl():
         
         figure = self.objIface.objVisual.createFigure(self.df)
 
-        return [DF, QC, resultSearch, resultSolution, figure]
+        return figure
 
     def main(self, objUser):
         logging.info("Start UserControl 'main' function")

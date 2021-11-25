@@ -38,7 +38,7 @@ class Interface():
             logging.warnings("'getDataForVisual' Data not find!")
             dataUserControl = None
 
-        return dataUserControl[4]
+        return dataUserControl
 
     def printInterface(self):
         logging.info("Start Interface 'printInterface' function")
