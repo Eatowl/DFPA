@@ -87,7 +87,10 @@ class Interface():
                                                     .format(values['Browse']))
                     window['-OUTPUT-'].update(values['Browse'])
                     self.data_name = values['Browse']
-                    self.objUser.df_name = self.data_name
+                    logging.debug("Open data in interface: {}".format(self.data_name))
+                    if self.data_name is '':
+                        self.objUser.df_name = None
+                    else: self.objUser.df_name = self.data_name
                     self.objUser.openData()
 
                 case 'Data integrity check':

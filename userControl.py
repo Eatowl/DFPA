@@ -66,10 +66,13 @@ class UserControl():
 
     def openData(self):
         logging.info("Start UserControl 'openData' function")
-        self.df = OpenData(self.df_name)
-        logging.debug(self.df.df.columns)
-        logging.debug(self.df.roadMap.status_checks())
-        logging.debug("openData: df_id {}".format(self.df.id))
+        if self.df_name is not None:
+            self.df = OpenData(self.df_name)
+            logging.debug(self.df.df.columns)
+            logging.debug(self.df.roadMap.status_checks())
+            logging.debug("openData: df_id {}".format(self.df.id))
+        else:
+            logging.debug("openData: Data not found")
 
         return self.df
 
