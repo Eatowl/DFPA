@@ -58,7 +58,8 @@ class Interface():
                   [sg.Text('Data for analysis: ', size=(15, 1)),
                    sg.InputText(),\
                    sg.FileBrowse(file_types=(("csv files", "*.csv"),)),\
-                   sg.Button('Open')],
+                   sg.Button('Open'), \
+                   sg.Button('Create test set')],
                   [sg.Button('Data integrity check'),\
                    sg.Button('Error correction'),\
                    sg.Button('Visualisation'),\
@@ -97,16 +98,23 @@ class Interface():
                     logging.debug("Start 'Data integrity check'.")
                     self.objUser.startProblemSearch()
                     self.updateTextField(window,\
-                                 self.objUser.df.roadMap.check_of_passes_data)
+                                 self.objUser.objData.roadMap.check_of_passes_data)
 
                 case 'Error correction':
                     logging.debug("Start 'Error correction'.")
+                    #self.objUser.startProblemSolution() # Fix empty data from problem search
                     self.updateTextField(window,\
-                                 self.objUser.df.roadMap.emission_check)
+                                 self.objUser.objData.roadMap.emission_check)
+
+                case 'Create test set':
+                    logging.debug("Start 'Create test set'.")
+                    self.objUser.createTrainAndTestSet()
+                    #self.updateTextField(window,\
+                    #             self.objUser.df.roadMap.emission_check)
 
                 case 'Visualisation':
                     logging.debug("Start 'Visualisation'.")
-                    data_figure = self.objVisual.createFigure(self.objUser.df)
+                    data_figure = self.objVisual.createFigure(self.objUser.objData)
                     if data_figure:
                         logging.debug("Print graph in window ['Visualisation']")
                         self.objVisual.drawFigure(\

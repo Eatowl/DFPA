@@ -22,8 +22,8 @@ class Usage(Exception):
 
     def __init__(self, msg):
         self.msg = msg
-    
-        
+
+
 def startUserControl(data : str) -> bool:
     logger.info("Start dfpa 'startUserControl' function")
     logger.debug("Create obj UserControl. Data file name: {}".format(data))

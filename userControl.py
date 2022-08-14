@@ -6,6 +6,8 @@ import pandas as pd
 import logging
 import itertools
 
+from sklearn.model_selection import train_test_split
+
 from interface import Interface
 from visualisation import Visualisation
 from qualityControl import QualityControl
@@ -40,7 +42,7 @@ class RoadMap():
                 "check_memory_usage": self.check_memory_usage}
 
 
-class OpenData():
+class WorkingData():
 
     id_iter = itertools.count()
 
@@ -48,6 +50,8 @@ class OpenData():
         self.id = next(self.id_iter)
         self.df = pd.read_csv(df_name)
         self.roadMap = RoadMap(self.id, self.df)
+        self.train_set = None
+        self.test_set = None
 
     def __len__(self):
         return len(self.df)
@@ -55,26 +59,35 @@ class OpenData():
     def get_id(self):
         return self.id
 
+    def createTrainAndTestSet(self):  #Fix name function
+        logging.info("Start WorkingData 'createTrainAndTestSet' function")
+        
+        self.train_set, self.test_set = train_test_split(self.df, \
+                                                         test_size=0.2, \
+                                                         random_state=42)
+        logging.debug("WorkingData startOfDataProcessing" \
+                        "Test_set.head(): {}".format(self.test_set.head()))
+
 
 class UserControl():
 
     def __init__(self, df):
         self.df_name = df
-        self.df = None
+        self.objData = None
         self.objIface = None
         self.objQuality = None
 
     def openData(self):
         logging.info("Start UserControl 'openData' function")
         if self.df_name is not None:
-            self.df = OpenData(self.df_name)
-            logging.debug(self.df.df.columns)
-            logging.debug(self.df.roadMap.status_checks())
-            logging.debug("openData: df_id {}".format(self.df.id))
+            self.objData = WorkingData(self.df_name)
+            logging.debug(self.objData.df.columns)
+            logging.debug(self.objData.roadMap.status_checks())
+            logging.debug("openData: df_id {}".format(self.objData.id))
         else:
             logging.debug("openData: Data not found")
 
-        return self.df
+        return self.objData
 
     def createUserInterface(self, objUser : UserControl):
         logging.info("Start UserControl 'createUserInterface' function")
@@ -87,7 +100,7 @@ class UserControl():
 
     def startProblemSearch(self):
         logging.info("Start UserControl 'startProblemSearch' function")
-        self.objQuality = QualityControl(self.df)
+        self.objQuality = QualityControl(self.objData)
         resultSearch = self.objQuality.problemSerch()
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem search: {}".format(resultSearch))
@@ -98,6 +111,14 @@ class UserControl():
         resultSolution = self.objQuality.problemSolution(resultSearch)
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
+
+    def createTrainAndTestSet(self):
+        logging.info("Start UserControl 'createTrainAndTestSet' function")
+        
+        self.objData.createTrainAndTestSet()
+
+        logging.debug("UserControl startOfDataProcessing" \
+                        "Test_set.head(): {}".format(self.objData.test_set.head()))
 
     def startOfDataProcessing(self):
         logging.info("Start UserControl 'startOfDataProcessing' function")
@@ -112,7 +133,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
         
-        figure = self.objIface.objVisual.createFigure(self.df)
+        figure = self.objIface.objVisual.createFigure(self.objData)
 
         return figure
 
