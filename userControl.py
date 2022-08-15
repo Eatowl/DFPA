@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from interface import Interface
 from visualisation import Visualisation
 from qualityControl import QualityControl
-
+from logs import syslog
 
 import warnings
 warnings.simplefilter('ignore')
@@ -71,8 +71,8 @@ class WorkingData():
 
 class UserControl():
 
-    def __init__(self, df):
-        self.df_name = df
+    def __init__(self, file_name):
+        self.df_name = file_name
         self.objData = None
         self.objIface = None
         self.objQuality = None
@@ -89,6 +89,7 @@ class UserControl():
 
         return self.objData
 
+    @syslog
     def createUserInterface(self, objUser : UserControl):
         logging.info("Start UserControl 'createUserInterface' function")
         logging.debug("Create obj createInterface." \
@@ -98,6 +99,7 @@ class UserControl():
 
         return ifaceStatus
 
+    @syslog
     def startProblemSearch(self):
         logging.info("Start UserControl 'startProblemSearch' function")
         self.objQuality = QualityControl(self.objData)
@@ -105,6 +107,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem search: {}".format(resultSearch))
 
+    @syslog
     def startProblemSolution(self):
         logging.info("Start UserControl 'startProblemSolution' function")
         
@@ -112,6 +115,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
 
+    @syslog
     def createTrainAndTestSet(self):
         logging.info("Start UserControl 'createTrainAndTestSet' function")
         
@@ -120,6 +124,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "Test_set.head(): {}".format(self.objData.test_set.head()))
 
+    @syslog
     def startOfDataProcessing(self):
         logging.info("Start UserControl 'startOfDataProcessing' function")
         
@@ -137,6 +142,7 @@ class UserControl():
 
         return figure
 
+    @syslog
     def main(self, objUser):
         logging.info("Start UserControl 'main' function")
         status = self.createUserInterface(objUser)

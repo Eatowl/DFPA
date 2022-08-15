@@ -6,16 +6,9 @@ import getopt
 from userControl import UserControl
 
 import logging
-from logging.config import fileConfig
+from logs import syslog
 
-import userControl, interface, visualisation
-import qualityControl, problemSearch, problemSolution
-
-fileConfig('log_config.ini')
-logger = logging.getLogger()
-fh = logging.FileHandler('filelog.log')
-fh.setLevel(logging.DEBUG)
-logger.addHandler(fh)
+import userControl
 
 
 class Usage(Exception):
@@ -24,18 +17,20 @@ class Usage(Exception):
         self.msg = msg
 
 
+@syslog
 def startUserControl(data : str) -> bool:
-    logger.info("Start dfpa 'startUserControl' function")
-    logger.debug("Create obj UserControl. Data file name: {}".format(data))
+
     userControlObj = UserControl(data)
     statusUserSession = userControlObj.main(userControlObj)
 
     return statusUserSession
 
 def main(argv = None):
-    logger.info("||||||||||||||||||||||||||||||||||||||")
-    logger.info("Start dfpa 'main' function")
-    logger.info("||||||||||||||||||||||||||||||||||||||")
+    logging.info("||||||||||||||||||||||||||||||||||||||")
+    logging.info("Start dfpa 'main' function")
+    logging.info("||||||||||||||||||||||||||||||||||||||")
+
+    #obj = Logs()
 
     if argv is None:
         argv = sys.argv
@@ -43,10 +38,10 @@ def main(argv = None):
         try:
             opts, args = getopt.getopt(argv[1:], "h", ["help"])
             if len(args) != 0:
-                logger.debug('dfpa main run userControl data: {}'.format(args[0]))
+                logging.debug('dfpa main run userControl data: {}'.format(args[0]))
                 status_userControl = startUserControl(args[0])
             else:
-                logger.debug('dfpa main run userControl data: Empty')
+                logging.debug('dfpa main run userControl data: Empty')
                 status_userControl = startUserControl(None)
         except getopt.error as msg:
              raise Usage(msg)
