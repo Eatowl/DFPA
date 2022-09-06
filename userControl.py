@@ -89,8 +89,8 @@ class UserControl():
 
         return self.objData
 
-    @syslog
-    def createUserInterface(self, objUser : UserControl):
+    @syslog("example-param")
+    def createUserInterface(self, objUser: UserControl):
         logging.info("Start UserControl 'createUserInterface' function")
         logging.debug("Create obj createInterface." \
                         " Data file name: {}".format(self.df_name))
@@ -99,7 +99,7 @@ class UserControl():
 
         return ifaceStatus
 
-    @syslog
+    @syslog("Temporary param")
     def startProblemSearch(self):
         logging.info("Start UserControl 'startProblemSearch' function")
         self.objQuality = QualityControl(self.objData)
@@ -107,7 +107,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem search: {}".format(resultSearch))
 
-    @syslog
+    @syslog("Temporary param")
     def startProblemSolution(self):
         logging.info("Start UserControl 'startProblemSolution' function")
         
@@ -115,7 +115,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "result problem solution: {}".format(resultSolution))
 
-    @syslog
+    @syslog("Temporary param")
     def createTrainAndTestSet(self):
         logging.info("Start UserControl 'createTrainAndTestSet' function")
         
@@ -124,7 +124,7 @@ class UserControl():
         logging.debug("UserControl startOfDataProcessing" \
                         "Test_set.head(): {}".format(self.objData.test_set.head()))
 
-    @syslog
+    @syslog("Temporary param")
     def startOfDataProcessing(self):
         logging.info("Start UserControl 'startOfDataProcessing' function")
         
@@ -142,7 +142,7 @@ class UserControl():
 
         return figure
 
-    @syslog
+    @syslog("Temporary param")
     def main(self, objUser):
         logging.info("Start UserControl 'main' function")
         status = self.createUserInterface(objUser)
